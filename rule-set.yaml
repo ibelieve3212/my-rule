@@ -1,32 +1,84 @@
+#回家ss节点
+listeners:
+  - name: ss-home
+    type: shadowsocks
+    port: <port>
+    listen: 0.0.0.0
+    cipher: aes-128-gcm
+    password: <PASSWORD>
+    udp: true
+
 ######### 锚点 start #######
 # 策略组相关
-pr: &pr {type: select, proxies: [默认, 直连, 香港, 台湾, 日本, 新加坡, 美国, 韩国, 德国, 其它地区, 全部节点]}
+pr:
+  &pr {
+    type: select,
+    proxies:
+      [
+        ⚡ 全局规则,
+        ♻️ 自动切换,
+        🚀 手动切换,
+        直连,
+        低倍率,
+        🇭🇰 香港自动,
+        🇨🇳 台湾自动,
+        🇯🇵 日本自动,
+        🇸🇬 新加坡自动,
+        🇺🇲 美国自动,
+        🇰🇷 韩国自动,
+        🇩🇪 德国自动,
+        🇭🇰 香港手动,
+        🇨🇳 台湾手动,
+        🇯🇵 日本手动,
+        🇸🇬 新加坡手动,
+        🇺🇲 美国手动,
+        🇰🇷 韩国手动,
+        🇩🇪 德国手动,
+        其它地区,
+      ],
+  }
 
 #这里是订阅更新和延迟测试相关的
-p: &p {type: http, interval: 3600, health-check: {enable: true, url: https://1.1.1.1/generate_204, interval: 300}}
+p:
+  &p {
+    type: http,
+    interval: 3600,
+    health-check:
+      { enable: true, url: https://1.1.1.1/generate_204, interval: 300 },
+  }
 
 ######### 锚点 end #######
 
 # url 里填写自己的订阅,名称不能重复
 proxy-providers:
-  赔钱:
-    <<: *p
-    url: ""
-    path: ./proxy_provider/赔钱.yaml
-    health-check:
-      enable: true
-      url: https://1.1.1.1/generate_204
-      interval: 300
-# 第二个机场，如有就解开注释，名称不能重复,path（文件位置）不能重复，并在12行那解开provider2的注释
   花云:
     <<: *p
     url: ""
-    path: ./proxy_provider/花云.yaml
+    path: ./proxy_provider/huayun.yaml
+    exclude-filter: "Traffic|Expire"
     health-check:
       enable: true
       url: https://1.1.1.1/generate_204
       interval: 300
-# 本地文件
+  # 第二个机场，如有就解开注释，名称不能重复,path（文件位置）不能重复，并在12行那解开provider2的注释
+  worker1:
+    <<: *p
+    url: ""
+    path: ./proxy_provider/worker1.yaml
+    health-check:
+      enable: false
+      url: https://1.1.1.1/generate_204
+      interval: 300
+  worker2:
+    <<: *p
+    url: ""
+    path: ./proxy_provider/worker2.yaml
+    exclude-filter: "电信|联通|移动|频道|IPV6"
+    health-check:
+      enable: false
+      url: https://1.1.1.1/generate_204
+      interval: 300
+  # 本地文件
   custom:
     <<: *p
     type: file
@@ -37,64 +89,247 @@ proxy-providers:
       interval: 300
 
 proxies:
-- name: "直连"
-  type: direct
-  udp: true
+  - name: "直连"
+    type: direct
+    udp: true
 proxy-groups:
-  - {name: 默认, type: select, proxies: [自动选择, 香港, 台湾, 日本, 新加坡, 美国, 韩国, 德国, 其它地区, 全部节点, 直连]}
-  - {name: Emby, type: select, proxies: [默认, 自动选择, 香港, 台湾, 日本, 新加坡, 美国, 韩国, 德国, 其它地区, 全部节点]}
-  - {name: Google, <<: *pr}
-  - {name: Telegram, <<: *pr}
-  - {name: Twitter, <<: *pr}
-  - {name: 哔哩东南亚, <<: *pr}
-  - {name: 巴哈姆特, <<: *pr}
-  - {name: NETFLIX, <<: *pr}
-  - {name: Spotify, <<: *pr}
-  - {name: 国内, type: select, proxies: [直连, 默认, 香港, 台湾, 日本, 新加坡, 美国, 其它地区, 全部节点, 自动选择]}
-  - {name: 其他, <<: *pr}
+  - {
+      name: ⚡ 全局规则,
+      type: select,
+      proxies:
+        [
+          ♻️ 自动切换,
+          🚀 手动切换,
+          直连,
+          低倍率,
+          🇭🇰 香港自动,
+          🇨🇳 台湾自动,
+          🇯🇵 日本自动,
+          🇸🇬 新加坡自动,
+          🇺🇲 美国自动,
+          🇰🇷 韩国自动,
+          🇩🇪 德国自动,
+          🇭🇰 香港手动,
+          🇨🇳 台湾手动,
+          🇯🇵 日本手动,
+          🇸🇬 新加坡手动,
+          🇺🇲 美国手动,
+          🇰🇷 韩国手动,
+          🇩🇪 德国手动,
+          其它地区,
+        ],
+    }
+  - {
+      name: ♻️ 自动切换,
+      type: url-test,
+      include-all-providers: true,
+      tolerance: 10,
+      interval: 300,
+    }
+  - { name: 🚀 手动切换, type: select, include-all-providers: true }
+  - {
+      name: 🎥 Emby服务,
+      type: select,
+      proxies:
+        [
+          ⚡ 全局规则,
+          ♻️ 自动切换,
+          🚀 手动切换,
+          直连,
+          低倍率,
+          🇭🇰 香港自动,
+          🇨🇳 台湾自动,
+          🇯🇵 日本自动,
+          🇸🇬 新加坡自动,
+          🇺🇲 美国自动,
+          🇰🇷 韩国自动,
+          🇩🇪 德国自动,
+          🇭🇰 香港手动,
+          🇨🇳 台湾手动,
+          🇯🇵 日本手动,
+          🇸🇬 新加坡手动,
+          🇺🇲 美国手动,
+          🇰🇷 韩国手动,
+          🇩🇪 德国手动,
+          其它地区,
+        ],
+    }
+  - { name: 📢 Google服务, <<: *pr }
+  - { name: 📲 Telegram, <<: *pr }
+  - { name: Ⓜ️ 微软服务, <<: *pr }
+  - { name: 🍎 Apple服务, <<: *pr }
+  - { name: 🎵 Spotify, <<: *pr }
+  - { name: ▶️ 奈飞服务, <<: *pr }
+  - { name: 💧 Twitter, <<: *pr }
+  - {
+      name: 🇨🇳 国内,
+      type: select,
+      proxies:
+        [
+          直连,
+          ♻️ 自动切换,
+          🚀 手动切换,
+          ⚡ 全局规则,
+          🇭🇰 香港自动,
+          🇨🇳 台湾自动,
+          🇯🇵 日本自动,
+          🇸🇬 新加坡自动,
+          🇺🇲 美国自动,
+          🇰🇷 韩国自动,
+          🇩🇪 德国自动,
+          🇭🇰 香港手动,
+          🇨🇳 台湾手动,
+          🇯🇵 日本手动,
+          🇸🇬 新加坡手动,
+          🇺🇲 美国手动,
+          🇰🇷 韩国手动,
+          🇩🇪 德国手动,
+          其它地区,
+        ],
+    }
+  - { name: 其他, <<: *pr }
+  - {
+      name: 低倍率,
+      type: url-test,
+      include-all-providers: true,
+      filter: "实验性",
+      tolerance: 10,
+      interval: 300,
+    }
 
-#分隔,下面是地区分组
-  - {name: 香港, type: select , include-all-providers: true, filter: "(?i)港|hk|hongkong|hong kong"}
-  - {name: 台湾, type: select , include-all-providers: true, filter: "(?i)台|新北|彰化|TW|Taiwan"}
-  - {name: 日本, type: select , include-all-providers: true, filter: "(?i)日|jp|japan"}
-  - {name: 美国, type: select , include-all-providers: true, filter: "(?i)美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States"}
-  - {name: 新加坡, type: select , include-all-providers: true, filter: "(?i)(新|sg|singapore)"}
-  - {name: 韩国, type: select , include-all-providers: true, filter: "(?i)(KR|Korea|KOR|首尔|韩|韓|春川)"}
-  - {name: 德国, type: select , include-all-providers: true, filter: "(?i)(德|DE|DEU|Germany)"}
-  - {name: 其它地区, type: select , include-all-providers: true, filter: "(?i)^(?!.*(?:🇭🇰|🇯🇵|🇺🇸|🇸🇬|🇨🇳|港|hk|hongkong|台|tw|taiwan|日|jp|japan|新|sg|singapore|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|KR|Korea|KOR|首尔|韩|韓|春川|德|DE|DEU|Germany)).*"}
-  - {name: 全部节点, type: select , include-all-providers: true}
-  - {name: 自动选择, type: url-test, include-all-providers: true, tolerance: 10}
+  #分隔,下面是地区分组
+  - {
+      name: 🇭🇰 香港自动,
+      type: url-test,
+      include-all-providers: true,
+      filter: "(?i)港|hk|hongkong|hong kong",
+      interval: 300,
+    }
+  - {
+      name: 🇨🇳 台湾自动,
+      type: url-test,
+      include-all-providers: true,
+      filter: "(?i)台|新北|彰化|TW|Taiwan",
+      interval: 300,
+    }
+  - {
+      name: 🇯🇵 日本自动,
+      type: url-test,
+      include-all-providers: true,
+      filter: "(?i)日|jp|japan",
+      interval: 300,
+    }
+  - {
+      name: 🇺🇲 美国自动,
+      type: url-test,
+      include-all-providers: true,
+      filter: "(?i)美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States",
+      interval: 300,
+    }
+  - {
+      name: 🇸🇬 新加坡自动,
+      type: url-test,
+      include-all-providers: true,
+      filter: "(?i)(新|sg|singapore)",
+      interval: 300,
+    }
+  - {
+      name: 🇰🇷 韩国自动,
+      type: url-test,
+      include-all-providers: true,
+      filter: "(?i)(KR|Korea|KOR|首尔|韩|韓|春川)",
+      interval: 300,
+    }
+  - {
+      name: 🇩🇪 德国自动,
+      type: url-test,
+      include-all-providers: true,
+      filter: "(?i)(德|Germany)",
+      interval: 300,
+    }
+  - {
+      name: 🇭🇰 香港手动,
+      type: select,
+      include-all-providers: true,
+      filter: "(?i)港|hk|hongkong|hong kong",
+    }
+  - {
+      name: 🇨🇳 台湾手动,
+      type: select,
+      include-all-providers: true,
+      filter: "(?i)台|新北|彰化|TW|Taiwan",
+    }
+  - {
+      name: 🇯🇵 日本手动,
+      type: select,
+      include-all-providers: true,
+      filter: "(?i)日|jp|japan",
+    }
+  - {
+      name: 🇺🇲 美国手动,
+      type: select,
+      include-all-providers: true,
+      filter: "(?i)美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States",
+    }
+  - {
+      name: 🇸🇬 新加坡手动,
+      type: select,
+      include-all-providers: true,
+      filter: "(?i)(新|sg|singapore)",
+    }
+  - {
+      name: 🇰🇷 韩国手动,
+      type: select,
+      include-all-providers: true,
+      filter: "(?i)(KR|Korea|KOR|首尔|韩|韓|春川)",
+    }
+  - {
+      name: 🇩🇪 德国手动,
+      type: select,
+      include-all-providers: true,
+      filter: "(?i)(德|Germany)",
+    }
+  - {
+      name: 其它地区,
+      type: select,
+      include-all-providers: true,
+      filter: "(?i)^(?!.*(?:🇭🇰|🇯🇵|🇺🇸|🇸🇬|🇨🇳|港|hk|hongkong|台|tw|taiwan|日|jp|japan|新|sg|singapore|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|KR|Korea|KOR|首尔|韩|韓|春川|德|Germany)).*",
+    }
 
 rules:
-#域名规则
+  #域名规则
   - GEOIP,lan,直连,no-resolve
-  - RULE-SET,emby_domain,Emby
-  - RULE-SET,biliintl_domain,哔哩东南亚
-  - RULE-SET,ehentai_domain,默认
-  - RULE-SET,github_domain,默认
-  - RULE-SET,twitter_domain,Twitter
-  - RULE-SET,youtube_domain,Google
-  - RULE-SET,google_domain,Google
-  - RULE-SET,telegram_domain,Telegram
-  - RULE-SET,netflix_domain,NETFLIX
-  - RULE-SET,bilibili_domain,国内
-  - RULE-SET,bahamut_domain,巴哈姆特
-  - RULE-SET,spotify_domain,Spotify
-  - RULE-SET,pixiv_domain,默认
-  - RULE-SET,cn_domain,国内
+  - RULE-SET,direct_domain,直连
+  - RULE-SET,reject_domain,REJECT
+  - RULE-SET,emby_domain,🎥 Emby服务
+  - RULE-SET,emby2_domain,🎥 Emby服务
+  - RULE-SET,apple_domain,🍎 Apple服务
+  - RULE-SET,ehentai_domain,⚡ 全局规则
+  - RULE-SET,github_domain,⚡ 全局规则
+  - RULE-SET,twitter_domain,💧 Twitter
+  - RULE-SET,youtube_domain,📢 Google服务
+  - RULE-SET,google_domain,📢 Google服务
+  - RULE-SET,telegram_domain,📲 Telegram
+  - RULE-SET,netflix_domain,▶️ 奈飞服务
+  - RULE-SET,bilibili_domain,🇨🇳 国内
+  - RULE-SET,microsoft_domain,Ⓜ️ 微软服务
+  - RULE-SET,spotify_domain,🎵 Spotify
+  - RULE-SET,pixiv_domain,⚡ 全局规则
+  - RULE-SET,cn_domain,🇨🇳 国内
   - RULE-SET,geolocation-!cn,其他
-  
-#IP规则
-  - RULE-SET,google_ip,Google
-  - RULE-SET,netflix_ip,NETFLIX
-  - RULE-SET,telegram_ip,Telegram
-  - RULE-SET,twitter_ip,Twitter
-  - RULE-SET,cn_ip,国内
+
+  #IP规则
+  - RULE-SET,google_ip,📢 Google服务
+  - RULE-SET,netflix_ip,▶️ 奈飞服务
+  - RULE-SET,telegram_ip,📲 Telegram
+  - RULE-SET,twitter_ip,💧 Twitter
+  - RULE-SET,cn_ip,🇨🇳 国内
   - MATCH,其他
 
 rule-anchor:
-  ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: text}
-  domain: &domain {type: http, interval: 86400, behavior: domain, format: text}
+  ip: &ip { type: http, interval: 86400, behavior: ipcidr, format: text }
+  domain:
+    &domain { type: http, interval: 86400, behavior: domain, format: text }
 rule-providers:
   private:
     <<: *domain
@@ -104,10 +339,10 @@ rule-providers:
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.list"
   emby_domain:
     <<: *domain
-    url: "https://raw.githubusercontent.com/mswarmtree/ruleset/master/clash/emby.list"
-  biliintl_domain:
+    url: "https://raw.githubusercontent.com/lamysafari88/ruleset/master/clash/emby.list"
+  emby2_domain:
     <<: *domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/biliintl.list"
+    url: "https://raw.githubusercontent.com/ibelieve3212/my-rule/main/emby.list"
   ehentai_domain:
     <<: *domain
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/ehentai.list"
@@ -132,9 +367,6 @@ rule-providers:
   bilibili_domain:
     <<: *domain
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bilibili.list"
-  bahamut_domain:
-    <<: *domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bahamut.list"
   spotify_domain:
     <<: *domain
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/spotify.list"
@@ -144,6 +376,18 @@ rule-providers:
   geolocation-!cn:
     <<: *domain
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.list"
+  apple_domain:
+    <<: *domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.list"
+  microsoft_domain:
+    <<: *domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.list"
+  direct_domain:
+    <<: *domain
+    url: "https://raw.githubusercontent.com/ibelieve3212/my-rule/main/direct.list"
+  reject_domain:
+    <<: *domain
+    url: "https://raw.githubusercontent.com/ibelieve3212/my-rule/main/reject.list"
 
   cn_ip:
     <<: *ip
