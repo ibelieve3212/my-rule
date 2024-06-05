@@ -44,7 +44,18 @@ p:
     type: http,
     interval: 3600,
     health-check:
-      { enable: true, url: https://1.1.1.1/generate_204, interval: 300 },
+      {
+        enable: true,
+        url: https://captive.apple.com/generate_204,
+        interval: 300,
+      },
+  }
+u:
+  &u {
+    url: https://captive.apple.com/generate_204,
+    interval: 300,
+    tolerance: 10,
+    timeout: 5000,
   }
 
 ######### 锚点 end #######
@@ -56,37 +67,21 @@ proxy-providers:
     url: ""
     path: ./proxy_provider/huayun.yaml
     exclude-filter: "Traffic|Expire"
-    health-check:
-      enable: true
-      url: https://1.1.1.1/generate_204
-      interval: 300
   # 第二个机场，如有就解开注释，名称不能重复,path（文件位置）不能重复，并在12行那解开provider2的注释
   worker1:
     <<: *p
     url: ""
     path: ./proxy_provider/worker1.yaml
-    health-check:
-      enable: false
-      url: https://1.1.1.1/generate_204
-      interval: 300
   worker2:
     <<: *p
     url: ""
     path: ./proxy_provider/worker2.yaml
     exclude-filter: "电信|联通|移动|频道|IPV6"
-    health-check:
-      enable: false
-      url: https://1.1.1.1/generate_204
-      interval: 300
   # 本地文件
   custom:
     <<: *p
     type: file
     path: ./proxy_provider/custom.yaml
-    health-check:
-      enable: true
-      url: https://1.1.1.1/generate_204
-      interval: 300
 
 proxies:
   - name: "直连"
@@ -119,13 +114,7 @@ proxy-groups:
           其它地区,
         ],
     }
-  - {
-      name: ♻️ 自动切换,
-      type: url-test,
-      include-all-providers: true,
-      tolerance: 10,
-      interval: 300,
-    }
+  - { name: ♻️ 自动切换, type: url-test, include-all-providers: true, <<: *u }
   - { name: 🚀 手动切换, type: select, include-all-providers: true }
   - {
       name: 🎥 Emby服务,
@@ -193,8 +182,7 @@ proxy-groups:
       type: url-test,
       include-all-providers: true,
       filter: "实验性",
-      tolerance: 10,
-      interval: 300,
+      <<: *u,
     }
 
   #分隔,下面是地区分组
@@ -203,49 +191,49 @@ proxy-groups:
       type: url-test,
       include-all-providers: true,
       filter: "(?i)港|hk|hongkong|hong kong",
-      interval: 300,
+      <<: *u,
     }
   - {
       name: 🇨🇳 台湾自动,
       type: url-test,
       include-all-providers: true,
       filter: "(?i)台|新北|彰化|TW|Taiwan",
-      interval: 300,
+      <<: *u,
     }
   - {
       name: 🇯🇵 日本自动,
       type: url-test,
       include-all-providers: true,
       filter: "(?i)日|jp|japan",
-      interval: 300,
+      <<: *u,
     }
   - {
       name: 🇺🇲 美国自动,
       type: url-test,
       include-all-providers: true,
       filter: "(?i)美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States",
-      interval: 300,
+      <<: *u,
     }
   - {
       name: 🇸🇬 新加坡自动,
       type: url-test,
       include-all-providers: true,
       filter: "(?i)(新|sg|singapore)",
-      interval: 300,
+      <<: *u,
     }
   - {
       name: 🇰🇷 韩国自动,
       type: url-test,
       include-all-providers: true,
       filter: "(?i)(KR|Korea|KOR|首尔|韩|韓|春川)",
-      interval: 300,
+      <<: *u,
     }
   - {
       name: 🇩🇪 德国自动,
       type: url-test,
       include-all-providers: true,
       filter: "(?i)(德|Germany)",
-      interval: 300,
+      <<: *u,
     }
   - {
       name: 🇭🇰 香港手动,
