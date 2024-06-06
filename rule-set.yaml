@@ -18,7 +18,7 @@ pr:
         ⚡ 全局规则,
         ♻️ 自动切换,
         🚀 手动切换,
-        直连,
+        DIRECT,
         低倍率,
         🇭🇰 香港自动,
         🇨🇳 台湾自动,
@@ -34,7 +34,6 @@ pr:
         🇺🇲 美国手动,
         🇰🇷 韩国手动,
         🇩🇪 德国手动,
-        其它地区,
       ],
   }
 
@@ -64,7 +63,7 @@ u:
 proxy-providers:
   花云:
     <<: *p
-    url: ""
+    url: "https://api.xmancdn.com/osubscribe.php?sid=1545&token=ROved1PK&sip002=1"
     path: ./proxy_provider/huayun.yaml
     exclude-filter: "Traffic|Expire"
   # 第二个机场，如有就解开注释，名称不能重复,path（文件位置）不能重复，并在12行那解开provider2的注释
@@ -83,10 +82,6 @@ proxy-providers:
     type: file
     path: ./proxy_provider/custom.yaml
 
-proxies:
-  - name: "直连"
-    type: direct
-    udp: true
 proxy-groups:
   - {
       name: ⚡ 全局规则,
@@ -95,7 +90,7 @@ proxy-groups:
         [
           ♻️ 自动切换,
           🚀 手动切换,
-          直连,
+          DIRECT,
           低倍率,
           🇭🇰 香港自动,
           🇨🇳 台湾自动,
@@ -111,7 +106,6 @@ proxy-groups:
           🇺🇲 美国手动,
           🇰🇷 韩国手动,
           🇩🇪 德国手动,
-          其它地区,
         ],
     }
   - { name: ♻️ 自动切换, type: url-test, include-all-providers: true, <<: *u }
@@ -124,7 +118,7 @@ proxy-groups:
           ⚡ 全局规则,
           ♻️ 自动切换,
           🚀 手动切换,
-          直连,
+          DIRECT,
           低倍率,
           🇭🇰 香港自动,
           🇨🇳 台湾自动,
@@ -140,7 +134,6 @@ proxy-groups:
           🇺🇲 美国手动,
           🇰🇷 韩国手动,
           🇩🇪 德国手动,
-          其它地区,
         ],
     }
   - { name: 📢 Google服务, <<: *pr }
@@ -153,30 +146,9 @@ proxy-groups:
   - {
       name: 🇨🇳 国内,
       type: select,
-      proxies:
-        [
-          直连,
-          ♻️ 自动切换,
-          🚀 手动切换,
-          ⚡ 全局规则,
-          🇭🇰 香港自动,
-          🇨🇳 台湾自动,
-          🇯🇵 日本自动,
-          🇸🇬 新加坡自动,
-          🇺🇲 美国自动,
-          🇰🇷 韩国自动,
-          🇩🇪 德国自动,
-          🇭🇰 香港手动,
-          🇨🇳 台湾手动,
-          🇯🇵 日本手动,
-          🇸🇬 新加坡手动,
-          🇺🇲 美国手动,
-          🇰🇷 韩国手动,
-          🇩🇪 德国手动,
-          其它地区,
-        ],
+      proxies: [DIRECT, ♻️ 自动切换, 🚀 手动切换, ⚡ 全局规则],
     }
-  - { name: 其他, <<: *pr }
+  #- { name: 其他, <<: *pr }
   - {
       name: 低倍率,
       type: url-test,
@@ -278,16 +250,15 @@ proxy-groups:
       filter: "(?i)(德|Germany)",
     }
   - {
-      name: 其它地区,
+      name: 🐟 漏网之鱼,
       type: select,
-      include-all-providers: true,
-      filter: "(?i)^(?!.*(?:🇭🇰|🇯🇵|🇺🇸|🇸🇬|🇨🇳|港|hk|hongkong|台|tw|taiwan|日|jp|japan|新|sg|singapore|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|KR|Korea|KOR|首尔|韩|韓|春川|德|Germany)).*",
+      proxies: [⚡ 全局规则, ♻️ 自动切换, 🚀 手动切换, DIRECT],
     }
 
 rules:
   #域名规则
-  - GEOIP,lan,直连,no-resolve
-  - RULE-SET,direct_domain,直连
+  - GEOIP,lan,DIRECT,no-resolve
+  - RULE-SET,direct_domain,DIRECT
   - RULE-SET,reject_domain,REJECT
   - RULE-SET,emby_domain,🎥 Emby服务
   - RULE-SET,emby2_domain,🎥 Emby服务
@@ -304,7 +275,7 @@ rules:
   - RULE-SET,spotify_domain,🎵 Spotify
   - RULE-SET,pixiv_domain,⚡ 全局规则
   - RULE-SET,cn_domain,🇨🇳 国内
-  - RULE-SET,geolocation-!cn,其他
+  #- RULE-SET,geolocation-!cn,🐟 漏网之鱼
 
   #IP规则
   - RULE-SET,google_ip,📢 Google服务
@@ -312,7 +283,7 @@ rules:
   - RULE-SET,telegram_ip,📲 Telegram
   - RULE-SET,twitter_ip,💧 Twitter
   - RULE-SET,cn_ip,🇨🇳 国内
-  - MATCH,其他
+  - MATCH,🐟 漏网之鱼
 
 rule-anchor:
   ip: &ip { type: http, interval: 86400, behavior: ipcidr, format: text }
