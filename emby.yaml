@@ -1,0 +1,10 @@
+payload:
+- DOMAIN-SUFFIX,cherrytv.one
+- DOMAIN-SUFFIX,nijigem.by
+- DOMAIN-SUFFIX,emby.moe
+- DOMAIN-SUFFIX,reddust.link
+- DOMAIN-SUFFIX,hovervan.org
+- DOMAIN-SUFFIX,tnx.one
+- DOMAIN-SUFFIX,cbcb.lol
+- DOMAIN-SUFFIX,tanhuatv.site
+- DST-PORT,8096
