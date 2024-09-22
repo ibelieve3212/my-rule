@@ -1,5 +1,6 @@
 payload:
 - DST-PORT,8096
+- DOMAIN-KEYWORD,emby
 - DOMAIN-SUFFIX,cherrytv.one
 - DOMAIN-SUFFIX,nijigem.by
 - DOMAIN-SUFFIX,emby.moe
@@ -9,3 +10,4 @@ payload:
 - DOMAIN-SUFFIX,cbcb.lol
 - DOMAIN-SUFFIX,tanhuatv.site
 - DOMAIN-SUFFIX,happyav.eu.org
+- DOMAIN-SUFFIX,mius.uk
