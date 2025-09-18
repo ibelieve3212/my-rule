@@ -12,3 +12,4 @@ payload:
 - DOMAIN-SUFFIX,happyav.eu.org
 - DOMAIN-SUFFIX,mius.uk
 - IP-CIDR,152.53.67.239/24,no-resolve
+- DOMAIN-SUFFIX,cflocal.xxlb.net
