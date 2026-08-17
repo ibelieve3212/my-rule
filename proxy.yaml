@@ -1,10 +1,6 @@
 payload:
-- DOMAIN-SUFFIX,idcflare.com
-- DOMAIN-SUFFIX,dash.cloudflare.com
-- DOMAIN-SUFFIX,surrit.com
-- DOMAIN-SUFFIX,workers.dev
-- DOMAIN-SUFFIX,pages.dev
 - DOMAIN-SUFFIX,linux.do
+- DOMAIN-SUFFIX,idcflare.com
 - DOMAIN-SUFFIX,agentrouter.org
 - DOMAIN-SUFFIX,abrdns.com
 - DOMAIN-SUFFIX,agnes-ai.com
