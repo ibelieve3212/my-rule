@@ -1,7 +1,10 @@
 payload:
-- DOMAIN-SUFFIX,nnnolanark.xyz
+- DST-PORT,22
+- DST-PORT,55522
+- DOMAIN-SUFFIX,989995.xyz
+- DOMAIN-SUFFIX,gon3.eu.org
+- DOMAIN-SUFFIX,hwhm.eu.org
 - DOMAIN-KEYWORD,oaifree
 - DOMAIN-KEYWORD,deeplx
 - DOMAIN-KEYWORD,oaipro
 - DOMAIN-KEYWORD,fuclaude
-- DOMAIN-SUFFIX,xn--6oq72ry9d5zx.cn
