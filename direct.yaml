@@ -4,7 +4,13 @@ payload:
 - DOMAIN-SUFFIX,989995.xyz
 - DOMAIN-SUFFIX,gon3.eu.org
 - DOMAIN-SUFFIX,hwhm.eu.org
+- DOMAIN-SUFFIX,cloudflare.com
+- DOMAIN-SUFFIX,cloudflareinsights.com
+- DOMAIN-SUFFIX,cloudflare-ech.com
+- DOMAIN-SUFFIX,nel.cloudflare.com
 - DOMAIN-KEYWORD,oaifree
 - DOMAIN-KEYWORD,deeplx
 - DOMAIN-KEYWORD,oaipro
 - DOMAIN-KEYWORD,fuclaude
+- DOMAIN-KEYWORD,hybgzs
+- DOMAIN-SUFFIX,hybgzs.com
