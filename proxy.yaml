@@ -2,10 +2,6 @@ payload:
 - DOMAIN-SUFFIX,idcflare.com
 - DOMAIN-SUFFIX,dash.cloudflare.com
 - DOMAIN-SUFFIX,surrit.com
-- DOMAIN-SUFFIX,cloudflare.com
-- DOMAIN-SUFFIX,cloudflareinsights.com
-- DOMAIN-SUFFIX,cloudflare-ech.com
-- DOMAIN-SUFFIX,nel.cloudflare.com
 - DOMAIN-SUFFIX,workers.dev
 - DOMAIN-SUFFIX,pages.dev
 - DOMAIN-SUFFIX,linux.do
@@ -20,5 +16,3 @@ payload:
 - DOMAIN-SUFFIX,tangxinvlog.pro
 - DOMAIN-SUFFIX,onelighter.site
 - DOMAIN-SUFFIX,0v0.club
-- DOMAIN-KEYWORD,hybgzs
-- DOMAIN-SUFFIX,hybgzs.com
